@@ -8,12 +8,12 @@ using TodoItems.Core.Validator;
 
 namespace TodoItems.Core.Services
 {
-    public class TodoItemsService
+    public class TodoItemService
     {
         private readonly ITodosRepository _todosRepository;
         private readonly TodoItemValidator _todoItemValidator;
 
-        public TodoItemsService(ITodosRepository todosRepository)
+        public TodoItemService(ITodosRepository todosRepository)
         {
             _todosRepository = todosRepository;
             _todoItemValidator = new TodoItemValidator();

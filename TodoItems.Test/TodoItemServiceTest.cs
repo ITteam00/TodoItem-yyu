@@ -14,7 +14,7 @@ namespace TodoItems.Test;
 
 public class TodoItemServiceTest
 {
-    private readonly TodoItemsService _todoService;
+    private readonly TodoItemService _todoService;
     private readonly TodoItemsRepository _todoItemsRepository;
     private readonly TodoItemValidator _todoItemValidator;
     private readonly Mock<ITodosRepository> _mockRepository;
@@ -22,7 +22,7 @@ public class TodoItemServiceTest
     public TodoItemServiceTest()
     {
         _mockRepository = new Mock<ITodosRepository>();
-        _todoService = new TodoItemsService(_mockRepository.Object);
+        _todoService = new TodoItemService(_mockRepository.Object);
         _todoItemValidator = new TodoItemValidator();
     }
 

@@ -12,14 +12,14 @@ namespace TodoItem.IntegrationTest
 {
     public class TodoItemRepositoryTest : IAsyncLifetime
     {
-        private readonly ILogger<TodoItemsService> _mockLogger;
+        private readonly ILogger<TodoItemService> _mockLogger;
         private readonly TodoItemsRepository _mongoRepository;
 
         public TodoItemRepositoryTest()
         {
-            var mockSettings = new Mock<IOptions<ToDoItemDatabaseSettings>>();
+            var mockSettings = new Mock<IOptions<TodoItemsDatabaseSettings>>();
 
-            mockSettings.Setup(s => s.Value).Returns(new ToDoItemDatabaseSettings
+            mockSettings.Setup(s => s.Value).Returns(new TodoItemsDatabaseSettings
             {
                 ConnectionString = "mongodb://localhost:27081",
                 DatabaseName = "TestTodoDatabase",
