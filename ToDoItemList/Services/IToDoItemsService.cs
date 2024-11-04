@@ -1,6 +1,6 @@
-﻿using ToDoItemList.Models;
+﻿using TodoItem.core.Models;
 
-namespace ToDoItemList.Services
+namespace TodoItem.core.Services
 {
     public interface IToDoItemsService
     {

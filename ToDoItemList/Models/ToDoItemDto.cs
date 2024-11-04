@@ -1,8 +1,8 @@
-﻿namespace ToDoItemList.Models
+﻿namespace TodoItem.core.Models
 {
     public class ToDoItemDto
     {
-        public  required string Id { get; init; }
+        public required string Id { get; init; }
         public string Description { get; set; } = string.Empty;
         public bool isDone { get; set; } = false;
         public DateTimeOffset CreatedTime { get; set; } = DateTimeOffset.Now;

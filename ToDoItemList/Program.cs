@@ -1,5 +1,5 @@
-using ToDoItemList;
-using ToDoItemList.Services;
+using TodoItem.core;
+using TodoItem.core.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 

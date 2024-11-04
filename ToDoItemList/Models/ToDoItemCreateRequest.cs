@@ -1,4 +1,4 @@
-﻿namespace ToDoItemList.Models
+﻿namespace TodoItem.core.Models
 {
     public class ToDoItemCreateRequest
     {

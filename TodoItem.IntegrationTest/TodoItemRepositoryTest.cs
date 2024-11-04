@@ -12,7 +12,7 @@ namespace TodoItem.IntegrationTest
 {
     public class TodoItemRepositoryTest : IAsyncLifetime
     {
-        private readonly ILogger<ToDoItemsService> _mockLogger;
+        private readonly ILogger<TodoItemsService> _mockLogger;
         private readonly TodoItemsRepository _mongoRepository;
 
         public TodoItemRepositoryTest()

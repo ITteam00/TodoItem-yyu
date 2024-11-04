@@ -1,8 +1,9 @@
 ﻿using Microsoft.Extensions.Options;
 using MongoDB.Driver;
-using ToDoItemList.Models;
+using TodoItem.core;
+using TodoItem.core.Models;
 
-namespace ToDoItemList.Services
+namespace TodoItem.core.Services
 {
     public class ToDoItemsService : IToDoItemsService
     {

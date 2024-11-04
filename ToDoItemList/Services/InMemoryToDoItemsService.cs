@@ -1,8 +1,8 @@
-﻿using ToDoItemList.Models;
+﻿using TodoItem.core.Models;
 
-namespace ToDoItemList.Services
+namespace TodoItem.core.Services
 {
-    public class InMemoryToDoItemsService 
+    public class InMemoryToDoItemsService
     {
         private static readonly List<ToDoItemDto> _toDoItems = new();
 

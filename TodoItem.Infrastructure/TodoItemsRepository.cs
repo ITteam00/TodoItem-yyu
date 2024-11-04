@@ -10,10 +10,10 @@ namespace TodoItem.Infrastructure
     public class TodoItemsRepository : ITodosRepository
     {
         public readonly IMongoCollection<TodoItemMongoDTO> ToDoItemsCollection;
-        private readonly ILogger<ToDoItemsService> _Logger;
+        private readonly ILogger<TodoItemsService> _Logger;
 
         public TodoItemsRepository(IOptions<ToDoItemDatabaseSettings> ToDoItemStoreDatabaseSettings,
-            ILogger<ToDoItemsService> logger)
+            ILogger<TodoItemsService> logger)
         {
             var mongoClient = new MongoClient(
                 ToDoItemStoreDatabaseSettings.Value.ConnectionString);
