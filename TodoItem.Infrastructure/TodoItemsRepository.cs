@@ -9,7 +9,7 @@ namespace TodoItem.Infrastructure
 {
     public class TodoItemsRepository : ITodosRepository
     {
-        public readonly IMongoCollection<TodoItemMongoDTO> ToDoItemsCollection;
+        public readonly IMongoCollection<TodoItemMongoDAO> ToDoItemsCollection;
         private readonly ILogger<TodoItemService> _Logger;
 
         public TodoItemsRepository(IOptions<TodoItemsDatabaseSettings> ToDoItemStoreDatabaseSettings,
@@ -21,14 +21,14 @@ namespace TodoItem.Infrastructure
             var mongoDatabase = mongoClient.GetDatabase(
                 ToDoItemStoreDatabaseSettings.Value.DatabaseName);
 
-            ToDoItemsCollection = mongoDatabase.GetCollection<TodoItemMongoDTO>(
+            ToDoItemsCollection = mongoDatabase.GetCollection<TodoItemMongoDAO>(
                 ToDoItemStoreDatabaseSettings.Value.CollectionName);
             _Logger = logger;
         }
 
         public async Task<List<TodoItemDTO>> GetItemsByDueDate(DateTimeOffset? dueDate)
         {
-            var filter = Builders<TodoItemMongoDTO>.Filter.Eq(item => item.DueDate, dueDate);
+            var filter = Builders<TodoItemMongoDAO>.Filter.Eq(item => item.DueDate, dueDate);
             var todoItems = await ToDoItemsCollection.Find(filter).ToListAsync();
 
             return todoItems.Select(item => new TodoItemDTO
@@ -49,7 +49,7 @@ namespace TodoItem.Infrastructure
             
             var list = updatedTodoItem.ModificationDateTimes;
             list.Add(DateTimeOffset.Now);
-            var item = new TodoItemMongoDTO
+            var item = new TodoItemMongoDAO
             {
                 Id = id,
                 Description = updatedTodoItem.Description,
@@ -63,7 +63,7 @@ namespace TodoItem.Infrastructure
 
         public async Task CreateAsync(TodoItemDTO newTodoItem)
         {
-            var item = new TodoItemMongoDTO
+            var item = new TodoItemMongoDAO
             {
                 Id = newTodoItem.Id,
                 Description = newTodoItem.Description,
@@ -84,9 +84,9 @@ namespace TodoItem.Infrastructure
             
             DateTimeOffset endDate = date.AddDays(5);
 
-            var filter = Builders<TodoItemMongoDTO>.Filter.And(
-                Builders<TodoItemMongoDTO>.Filter.Gte(item => item.DueDate, date),
-                Builders<TodoItemMongoDTO>.Filter.Lt(item => item.DueDate, endDate)
+            var filter = Builders<TodoItemMongoDAO>.Filter.And(
+                Builders<TodoItemMongoDAO>.Filter.Gte(item => item.DueDate, date),
+                Builders<TodoItemMongoDAO>.Filter.Lt(item => item.DueDate, endDate)
             );
 
             var items = await ToDoItemsCollection.Find(filter).ToListAsync();

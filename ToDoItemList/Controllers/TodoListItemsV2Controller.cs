@@ -30,7 +30,7 @@ namespace TodoItem.core.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<ToDoItemDto>> PutAsync(string id, [FromBody] TodoItemDTO toDoItemDto, string strategyType)
+        public async Task<ActionResult<ToDoItemDto>> PutAsync(string id, string strategyType, [FromBody] TodoItemDTO toDoItemDto)
         {
             bool isCreate = false;
             var existingItem = await _oldToDoItemsService.GetAsync(id);
