@@ -45,7 +45,16 @@ namespace TodoItem.core.Controllers
             }
             else
             {
-                await _toDoItemsService.UpdateAsync(id, toDoItemDto);
+                try
+                {
+                    await _toDoItemsService.UpdateAsync(id, toDoItemDto);
+                }
+                catch (TooManyEntriesException e)
+                {
+                    Console.WriteLine(e);
+                    return BadRequest("Too many update today");
+                }
+                
             }
 
             return isCreate ? Created("", toDoItemDto) : Ok(toDoItemDto);

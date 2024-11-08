@@ -28,8 +28,8 @@ namespace TodoItem.Test
             _client = _factory.CreateClient();
 
             var mongoClient = new MongoClient("mongodb://localhost:27081");
-            var mongoDatabase = mongoClient.GetDatabase("TodoItem");
-            _mongoCollection = mongoDatabase.GetCollection<TodoItemMongoDAO>("todos");
+            var mongoDatabase = mongoClient.GetDatabase("ToDoItems");
+            _mongoCollection = mongoDatabase.GetCollection<TodoItemMongoDAO>("ToDoItems");
         }
 
 
@@ -50,7 +50,9 @@ namespace TodoItem.Test
                 Description = "Original Todo",
                 IsDone = false,
                 CreatedTime = DateTimeOffset.Now,
-                ModificationDateTimes = new List<DateTimeOffset>()
+                ModificationDateTimes = new List<DateTimeOffset>(),
+                IsFavorite = false,
+                DueDate = DateTimeOffset.Now.AddDays(3)
             };
             await _mongoCollection.InsertOneAsync(existingItem);
 
@@ -60,12 +62,14 @@ namespace TodoItem.Test
                 Description = "Updated Todo",
                 IsDone = true,
                 CreatedTime = DateTimeOffset.Now,
-                ModificationDateTimes = new List<DateTimeOffset> { DateTimeOffset.Now }
+                ModificationDateTimes = new List<DateTimeOffset> { DateTimeOffset.Now },
+                IsFavorite = false,
+                DueDate = DateTimeOffset.Now.AddDays(3)
             };
 
             // Act
             var response = await _client.PutAsync(
-                $"/api/v2/TodoListItemsV2/{existingItem.Id}?strategyType=someStrategy",
+                $"/api/v2/TodoListItemsV2/{updateDto.Id}?strategyType=someStrategy",
                 new StringContent(JsonSerializer.Serialize(updateDto), Encoding.UTF8, "application/json"));
 
             // Assert
@@ -94,7 +98,8 @@ namespace TodoItem.Test
                 IsDone = false,
                 IsFavorite = false,
                 CreatedTime = DateTimeOffset.Now,
-                ModificationDateTimes = new List<DateTimeOffset>() { DateTimeOffset.Now }
+                ModificationDateTimes = new List<DateTimeOffset>() { DateTimeOffset.Now },
+                DueDate = DateTimeOffset.Now.AddDays(3)
             };
 
             // Act
@@ -139,8 +144,10 @@ namespace TodoItem.Test
                 Id = "existing-id",
                 Description = "Original Todo",
                 IsDone = false,
-                CreatedTime = DateTimeOffset.Now,
-                ModificationDateTimes = new List<DateTimeOffset>()
+                CreatedTime = DateTimeOffset.Now.DateTime,
+                ModificationDateTimes = new List<DateTimeOffset>(),
+                IsFavorite = false,
+                DueDate = DateTimeOffset.Now.AddDays(3)
             };
             await _mongoCollection.InsertOneAsync(existingItem);
 
@@ -149,21 +156,24 @@ namespace TodoItem.Test
                 Id = "existing-id",
                 Description = "Updated Todo",
                 IsDone = true,
-                CreatedTime = DateTimeOffset.Now,
+                CreatedTime = DateTimeOffset.Now.DateTime,
                 ModificationDateTimes = new List<DateTimeOffset>
                 {
                     DateTimeOffset.Now,
                     DateTimeOffset.Now.AddMinutes(1),
-                    DateTimeOffset.Now.AddMinutes(2)
-                }
+                    DateTimeOffset.Now.AddMinutes(2),
+                    DateTimeOffset.Now.AddMinutes(3)
+                },
+                IsFavorite = false,
+                DueDate = DateTimeOffset.Now.AddDays(3)
             };
 
-            // Act
+            var s = "";
+
             var response = await _client.PutAsync(
-                $"/api/v2/TodoListItemsV2/{existingItem.Id}?strategyType=someStrategy",
+                $"/api/v2/TodoListItemsV2/{updateDto.Id}?strategyType=someStrategy",
                 new StringContent(JsonSerializer.Serialize(updateDto), Encoding.UTF8, "application/json"));
 
-            // Assert
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
     }
