@@ -4,8 +4,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.11.35312.102
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoItem.core", "ToDoItemList\TodoItem.core.csproj", "{9D06BBD7-35D8-4EA2-961F-C4D9BC7F48ED}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FAEF935C-02C2-4A4F-897B-C5FE07E9CAFE} = {FAEF935C-02C2-4A4F-897B-C5FE07E9CAFE}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoItem.Test", "TodoItem.Test\TodoItem.Test.csproj", "{D057C333-A3EC-4F15-94B2-FBC84667E99D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FAEF935C-02C2-4A4F-897B-C5FE07E9CAFE} = {FAEF935C-02C2-4A4F-897B-C5FE07E9CAFE}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoItem.Infrastructure", "TodoItem.Infrastructure\TodoItem.Infrastructure.csproj", "{FAEF935C-02C2-4A4F-897B-C5FE07E9CAFE}"
 EndProject

@@ -1,4 +1,4 @@
-﻿namespace ToDoItemList
+﻿namespace TodoItem.core
 {
     public class ToDoItemDatabaseSettings
     {

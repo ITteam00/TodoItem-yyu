@@ -1,6 +1,6 @@
 ﻿namespace TodoItem.Infrastructure
 {
-    public class ToDoItemDatabaseSettings
+    public class TodoItemsDatabaseSettings
     {
         public string ConnectionString { get; set; } = null!;
 

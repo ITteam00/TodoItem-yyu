@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ToDoItemList.Models;
-using ToDoItemList.Services;
+using TodoItem.core.Models;
+using TodoItem.core.Services;
 
-namespace ToDoItemList.Controllers
+namespace TodoItem.core.Controllers
 {
 
 
@@ -15,9 +15,9 @@ namespace ToDoItemList.Controllers
         private readonly IToDoItemsService _toDoItemsService;
         private readonly ILogger<ToDoItemsController> _logger;
 
-        public ToDoItemsController(IToDoItemsService toDoItemsService,ILogger<ToDoItemsController> logger)
+        public ToDoItemsController(IToDoItemsService toDoItemsService, ILogger<ToDoItemsController> logger)
         {
-            _toDoItemsService =  toDoItemsService;
+            _toDoItemsService = toDoItemsService;
             _logger = logger;
         }
 
@@ -57,8 +57,8 @@ namespace ToDoItemList.Controllers
             bool isCreate = false;
             var existingItem = await _toDoItemsService.GetAsync(id);
             if (id != toDoItemDto.Id)
-            { 
-                return BadRequest("ToDo Item ID in url must be equal to request body"); 
+            {
+                return BadRequest("ToDo Item ID in url must be equal to request body");
             }
             if (existingItem is null)
             {
@@ -76,7 +76,7 @@ namespace ToDoItemList.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteAsync(string id)
         {
-            var s =  await _toDoItemsService.DeleteAsync(id);
+            var s = await _toDoItemsService.DeleteAsync(id);
             return s ? NoContent() : NotFound();
         }
     }

@@ -12,14 +12,14 @@ namespace TodoItem.IntegrationTest
 {
     public class TodoItemRepositoryTest : IAsyncLifetime
     {
-        private readonly ILogger<ToDoItemsService> _mockLogger;
+        private readonly ILogger<TodoItemService> _mockLogger;
         private readonly TodoItemsRepository _mongoRepository;
 
         public TodoItemRepositoryTest()
         {
-            var mockSettings = new Mock<IOptions<ToDoItemDatabaseSettings>>();
+            var mockSettings = new Mock<IOptions<TodoItemsDatabaseSettings>>();
 
-            mockSettings.Setup(s => s.Value).Returns(new ToDoItemDatabaseSettings
+            mockSettings.Setup(s => s.Value).Returns(new TodoItemsDatabaseSettings
             {
                 ConnectionString = "mongodb://localhost:27081",
                 DatabaseName = "TestTodoDatabase",
@@ -31,7 +31,7 @@ namespace TodoItem.IntegrationTest
 
         public async Task InitializeAsync()
         {
-            await _mongoRepository.ToDoItemsCollection.DeleteManyAsync(FilterDefinition<TodoItemMongoDTO>.Empty);
+            await _mongoRepository.ToDoItemsCollection.DeleteManyAsync(FilterDefinition<TodoItemMongoDAO>.Empty);
         }
 
         public Task DisposeAsync() => Task.CompletedTask;
@@ -39,7 +39,7 @@ namespace TodoItem.IntegrationTest
         [Fact]
         public async void should_return_item_by_id_1()
         {
-            var todoItemPo = new TodoItemMongoDTO()
+            var todoItemPo = new TodoItemMongoDAO()
             {
                 Id = "5f9a7d8e2d3b4a1eb8a7d8e2",
                 Description = "Buy groceries",
@@ -49,7 +49,7 @@ namespace TodoItem.IntegrationTest
                 DueDate = DateTimeOffset.Now.AddDays(2),
             };
             await _mongoRepository.ToDoItemsCollection.InsertOneAsync(todoItemPo);
-            var filter = Builders<TodoItemMongoDTO>.Filter
+            var filter = Builders<TodoItemMongoDAO>.Filter
                 .Eq(item => item.Id, "5f9a7d8e2d3b4a1eb8a7d8e2");
 
             var todoItem = _mongoRepository.ToDoItemsCollection.Find(filter).FirstOrDefault();
@@ -63,7 +63,7 @@ namespace TodoItem.IntegrationTest
         public async Task GetItemsByDueDate_ShouldReturnItemsWithMatchingDueDate()
         {
             var dueDate = DateTimeOffset.Now;
-            var todoItemPo1 = new TodoItemMongoDTO
+            var todoItemPo1 = new TodoItemMongoDAO
             {
                 Id = "1",
                 Description = "Test 1",
@@ -73,7 +73,7 @@ namespace TodoItem.IntegrationTest
                 ModificationDateTimes = new List<DateTimeOffset>(),
                 CreatedTime = DateTimeOffset.Now
             };
-            var todoItemPo2 = new TodoItemMongoDTO
+            var todoItemPo2 = new TodoItemMongoDAO
             {
                 Id = "2",
                 Description = "Test 2",
@@ -97,7 +97,7 @@ namespace TodoItem.IntegrationTest
         [Fact]
         public async Task UpdateAsync_ShouldUpdateItem()
         {
-            var todoItemPo = new TodoItemMongoDTO
+            var todoItemPo = new TodoItemMongoDAO
             {
                 Id = "1",
                 Description = "Initial Description",
@@ -122,7 +122,7 @@ namespace TodoItem.IntegrationTest
 
             await _mongoRepository.UpdateAsync("1", updatedTodoItem);
 
-            var filter = Builders<TodoItemMongoDTO>.Filter.Eq(item => item.Id, "1");
+            var filter = Builders<TodoItemMongoDAO>.Filter.Eq(item => item.Id, "1");
             var updatedItem = await _mongoRepository.ToDoItemsCollection.Find(filter).FirstOrDefaultAsync();
 
             Assert.NotNull(updatedItem);

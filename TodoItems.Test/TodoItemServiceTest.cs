@@ -14,7 +14,7 @@ namespace TodoItems.Test;
 
 public class TodoItemServiceTest
 {
-    private readonly ToDoItemsService _toDoService;
+    private readonly TodoItemService _todoService;
     private readonly TodoItemsRepository _todoItemsRepository;
     private readonly TodoItemValidator _todoItemValidator;
     private readonly Mock<ITodosRepository> _mockRepository;
@@ -22,7 +22,7 @@ public class TodoItemServiceTest
     public TodoItemServiceTest()
     {
         _mockRepository = new Mock<ITodosRepository>();
-        _toDoService = new ToDoItemsService(_mockRepository.Object);
+        _todoService = new TodoItemService(_mockRepository.Object);
         _todoItemValidator = new TodoItemValidator();
     }
 
@@ -49,7 +49,7 @@ public class TodoItemServiceTest
         };
         var exception =
             await Assert.ThrowsAsync<TooManyEntriesException>(() =>
-                _toDoService.UpdateAsync(updatedToDoItem.Id, updatedToDoItem));
+                _todoService.UpdateAsync(updatedToDoItem.Id, updatedToDoItem));
         Assert.Equal(exception.Message, "too many");
     }
 
@@ -79,7 +79,7 @@ public class TodoItemServiceTest
         _mockRepository.Setup(r => r.UpdateAsync(updatedToDoItem.Id, updatedToDoItem))
             .Returns(Task.CompletedTask);
 
-        await _toDoService.UpdateAsync(updatedToDoItem.Id, updatedToDoItem);
+        await _todoService.UpdateAsync(updatedToDoItem.Id, updatedToDoItem);
 
         Assert.Equal(4, updatedToDoItem.ModificationDateTimes.Count);
     }
@@ -103,7 +103,7 @@ public class TodoItemServiceTest
                 new TodoItemDTO() { Id = id }
             });
 
-        await Assert.ThrowsAsync<Exception>(() => _toDoService.CreateAsync(createTodoItem, "type"));
+        await Assert.ThrowsAsync<Exception>(() => _todoService.CreateAsync(createTodoItem, "type"));
     }
 
     [Fact]
@@ -115,7 +115,7 @@ public class TodoItemServiceTest
             .ReturnsAsync(new List<TodoItemDTO> { new TodoItemDTO() { Id = id }, new TodoItemDTO() { Id = id } });
 
         // Act
-        await _toDoService.CreateAsync(createTodoItem, "type");
+        await _todoService.CreateAsync(createTodoItem, "type");
 
         // Assert
         _mockRepository.Verify(repo => repo.CreateAsync(createTodoItem), Times.Once);
